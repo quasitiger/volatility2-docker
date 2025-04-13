@@ -30,6 +30,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build and push Volatility2 Alpine image
+        id: docker_build
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -38,4 +39,4 @@ jobs:
           tags: quasitiger/volatility2:alpine
 
       - name: Image digest
-        run: echo "Pushed image digest: ${{ steps.build-and-push.outputs.digest }}"
+        run: echo "Pushed image digest: ${{ steps.docker_build.outputs.digest }}"
