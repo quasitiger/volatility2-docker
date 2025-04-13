@@ -44,7 +44,7 @@ RUN python2 -m ensurepip --default-pip \
 # Install yara-python manually from staged path if present
 COPY --chown=unprivileged:ci ./yara-python /usr/local/lib/yara-python
 WORKDIR /usr/local/lib/yara-python
-RUN python setup.py install 
+RUN python setup.py install
 
 RUN find . -type d -exec chmod 0755 "{}" \; \
  && find . -type f -exec chmod 0644 "{}" \;
@@ -72,10 +72,11 @@ RUN apk del --purge stage
 COPY --chown=root:root assets/aliases.sh /etc/profile.d/
 
 # Default execution settings
-WORKDIR /usr/local
+#WORKDIR /usr/local
+WORKDIR /
 USER unprivileged
-ENTRYPOINT ["/usr/bin/dumb-init", "--", "volatility"]
-CMD ["--help"]
+#ENTRYPOINT ["/usr/bin/dumb-init", "--", "volatility"]
+#CMD ["--help"]
 
 # Metadata
 LABEL image.author="$PRODUCT_AUTHOR"
@@ -83,4 +84,4 @@ LABEL image.commit="$PRODUCT_BUILD_COMMIT"
 LABEL image.date="$PRODUCT_BUILD_DATE"
 LABEL image.repository="$PRODUCT_REPOSITORY"
 
-VOLUME ["/tmp", "/var/tmp"]
+#VOLUME ["/tmp", "/var/tmp"]
