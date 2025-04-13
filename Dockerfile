@@ -1,7 +1,7 @@
 FROM python:2.7-alpine
 
 LABEL maintainer="quasitiger@gmail.com"
-LABEL description="Alpine-based Volatility 2 forensic container with yara, plugins, and sandboxed user"
+LABEL description="Alpine-based Volatility 2 forensic container with yara, plugins"
 
 ARG GIT_TAG_VOLATILITY=2.6.1
 ARG GIT_TAG_VOLATILITY_COMMUNITY=master
@@ -27,12 +27,12 @@ RUN addgroup -S "$INSTALL_GROUP" \
 
 # Base system packages
 RUN apk add --no-cache \
-    bash bison ca-certificates flex less libxml2 libxslt python2 zlib file util-linux dumb-init
+    bash bison ca-certificates flex less libxml2 libxslt python2 zlib file util-linux dumb-init 
 
 # Build dependencies
 RUN apk add --no-cache --virtual=stage \
     g++ gcc git jpeg-dev libxml2-dev libxslt-dev linux-headers musl-dev openssl-dev \
-    python2-dev swig libffi-dev
+    python2-dev swig libffi-dev autoconf automake libtool m4
 
 # Python setup
 RUN python2 -m ensurepip --default-pip \
@@ -41,10 +41,27 @@ RUN python2 -m ensurepip --default-pip \
     distorm3 lxml openpyxl pefile pillow==6 pycoin pycrypto ujson \
     colorama construct==2.5.3 haystack pysocks pysphere requests simplejson
 
-# Install yara-python manually from staged path if present
-COPY --chown=unprivileged:ci ./yara-python /usr/local/lib/yara-python
+# # Install yara-python manually from staged path if present
+# COPY --chown=unprivileged:ci ./yara-python /usr/local/lib/yara-python
+# WORKDIR /usr/local/lib/yara-python
+# RUN python setup.py install
+
+# YARA 엔진 설치
+# RUN git clone https://github.com/VirusTotal/yara.git /tmp/yara \
+#  && cd /tmp/yara && git checkout ${YARA_VERSION} \
+#  && ./bootstrap.sh && ./configure --prefix=/usr \
+#  && make && make install
+
+# yara-python 설치 (libyara 필요함)
+# RUN git clone https://github.com/VirusTotal/yara-python /usr/local/lib/yara-python \
+#  && cd /usr/local/lib/yara-python \
+#  && python2 setup.py install
+
+RUN git clone https://github.com/VirusTotal/yara-python /usr/local/lib/yara-python
+RUN git clone https://github.com/VirusTotal/yara.git /usr/local/lib/yara-python/yara
 WORKDIR /usr/local/lib/yara-python
-RUN python setup.py install
+RUN python2 setup.py install
+
 
 RUN find . -type d -exec chmod 0755 "{}" \; \
  && find . -type f -exec chmod 0644 "{}" \;
@@ -75,6 +92,7 @@ COPY --chown=root:root assets/aliases.sh /etc/profile.d/
 #WORKDIR /usr/local
 WORKDIR /
 USER unprivileged
+ENTRYPOINT ["/bin/sh"]
 #ENTRYPOINT ["/usr/bin/dumb-init", "--", "volatility"]
 #CMD ["--help"]
 
