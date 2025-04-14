@@ -1,7 +1,7 @@
 # Volatility 2 (Alpine 기반 Docker 이미지)
 
-경량화된 Alpine 리눅스 기반의 [Volatility 2](https://github.com/volatilityfoundation/volatility) 메모리 포렌식 도구입니다.  
-공식 커뮤니티 플러그인 외에도 YARA, MalConfScan, cobaltstrikescan 등 다양한 플러그인이 포함되어 있어 실전 분석에 적합합니다.
+경량화된 Alpine 리눅스 기반의 [Volatility 2](https://github.com/volatilityfoundation/volatility) Docker 이미지 입니다.
+공식 커뮤니티 플러그인 외에도 YARA, MalConfScan, cobaltstrikescan 등 다양한 플러그인이 포함되어 있어 메모리 포렌식식 분석에 적합합니다.
 
 ---
 
