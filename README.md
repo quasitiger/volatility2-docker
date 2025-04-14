@@ -1,7 +1,7 @@
 # Volatility 2 (Alpine 기반 Docker 이미지)
 
 경량화된 Alpine 리눅스 기반의 [Volatility 2](https://github.com/volatilityfoundation/volatility) Docker 이미지 입니다.
-공식 커뮤니티 플러그인 외에도 YARA, MalConfScan, cobaltstrikescan 등 다양한 플러그인이 포함되어 있어 메모리 포렌식식 분석에 적합합니다.
+공식 커뮤니티 플러그인 외에도 YARA, MalConfScan, cobaltstrikescan 등 다양한 플러그인이 포함되어 있어 메모리 포렌식 분석에 적합합니다.
 
 ---
 
@@ -20,7 +20,8 @@
 ## 🚀 빠른 시작
 
 ```bash
-docker run --rm -v $(pwd)/mem:/data quasitiger/volatility2 -f /data/memdump.raw windows.info
+docker pull quasitiger/volatility2:alpine
+docker run --rm -v {image_path}:/data quasitiger/volatility2 -f /data/memdump.raw windows.info
 docker run -it --entrypoint /bin/sh quasitiger/volatility2
 ```
 
@@ -28,8 +29,8 @@ docker run -it --entrypoint /bin/sh quasitiger/volatility2
 
 ## 😊 출처
 
-### Based on https://github.com/sk4la/volatility3-docker
-### Based on https://hub.docker.com/r/sk4la/volatility
+#### Based on https://github.com/sk4la/volatility3-docker
+#### Based on https://hub.docker.com/r/sk4la/volatility
 Original author: sk4la (MIT License)
 Modified and published by: tiger (quasitiger)
 
